@@ -1,0 +1,69 @@
+@font-face {
+    font-family: 'pixel';
+    src: url('./VCR_OSD_MONO_1.001.ttf') format('truetype');
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'pixel';
+
+}
+
+body{
+    background-color: rgb(69, 69, 247);
+
+}
+
+header{
+    display: flex;
+    margin: 7vh;
+    margin-bottom: 0px;
+    gap: 5%;
+    color: white;
+}
+
+#back {
+    cursor: pointer;
+    transform: rotate(180deg);
+    border: none;
+    background: none;
+}
+
+#back img {
+    width: 30px;
+    height: 30px;
+}
+
+header p{
+    width: auto;
+    font-size: 500%;
+}
+
+.jogos{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info_jogo{
+    align-items: center;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 5%;
+    padding: 1%;
+}
+
+#play_game_2, 
+#play_game_1{
+    cursor: pointer;
+    color: whitesmoke;
+    background-color: blueviolet;
+    font-size: 70px;
+    border-right: 1vh solid rgb(58, 154, 58);
+    border-bottom: 1vh solid rgb(58, 154, 58);;
+    padding: 3vh;
+    padding-left: 10vw;
+    padding-right: 10vw;
+} 

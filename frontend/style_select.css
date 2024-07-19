@@ -1,0 +1,80 @@
+@font-face {
+    font-family: 'pixel';
+    src: url('./VCR_OSD_MONO_1.001.ttf') format('truetype');
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'pixel';
+}
+
+main {
+    height: 100vh;
+}
+
+.select_botoes {
+    height: 100vh;
+    display: flex;
+    justify-content: space-around;
+}
+
+#back {
+    cursor: pointer;
+    transform: rotate(180deg);
+    border: none;
+    background: none;
+    margin: 7vh;
+    position: absolute;
+}
+
+img {
+    width: 30px;
+    height: 30px;
+}
+
+.button {
+    border: none;
+    background: none;
+    font-size: 10vh;
+}
+
+p {
+    cursor: pointer;
+    writing-mode: vertical-rl;
+    /* vertical right-to-left */
+    text-orientation: upright;
+    white-space: nowrap;
+    transform-origin: bottom left;
+    font-size: 15vh;
+    color: whitesmoke;
+
+}
+
+.painel {
+
+    transition: all .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+
+}
+
+#painel1 {
+    background-color: blueviolet;
+    /* border-right: 2px solid rgb(0, 0, 0); */
+}
+
+#painel2 {
+    background-color: rgb(69, 69, 247);
+    /* border-right: 2px solid rgb(0, 0, 0); */
+}
+
+#painel3 {
+    background-color: rgb(58, 154, 58);
+}
+
+.painel:hover {
+    flex: 4;
+}

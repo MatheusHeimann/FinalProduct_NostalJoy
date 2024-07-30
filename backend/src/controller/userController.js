@@ -2,9 +2,9 @@ const connection = require('../config/db');
 
 async function storeUser(request, response) {
     const params = Array(
-        "Reanato",
-        "emal@email.com",
-        "123"
+        "Alguem",
+        "algumacoisa@email.com",
+        "3939"
     );
 
     const query = "INSERT INTO usuario(nome,email,senha) VALUES(?,?,?);";

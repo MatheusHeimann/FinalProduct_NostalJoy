@@ -2,15 +2,15 @@ const connection = require('../config/db');
 
 async function storeUser(request, response) {
     const params = Array(
-        "Alguem",
-        "algumacoisa@email.com",
-        "3939"
+        request.body.nome,
+        request.body.email,
+        request.body.senha
     );
 
     const query = "INSERT INTO usuario(nome,email,senha) VALUES(?,?,?);";
 
     connection.query(query, params, (err, results) => {
-        if(results) {
+        if (results) {
             response
                 .status(200)
                 .json({

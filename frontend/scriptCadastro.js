@@ -1,5 +1,3 @@
-const { METHODS } = require("http");
-
 let button = document.getElementById("submit")
 
 button.onclick = async function () {

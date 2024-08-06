@@ -1,4 +1,6 @@
-let button = document.getElementById("submit")
+// getUsers();
+
+let button = document.getElementById("submit");
 
 button.onclick = async function () {
     let nome = document.getElementById("nome").value;
@@ -6,15 +8,17 @@ button.onclick = async function () {
     let senha = document.getElementById("senha").value;
 
     let dados = { nome, email, senha }
-
+    console.log(dados);
     const response = await fetch("http://localhost:3006/api/register", {
         method: "POST",
-        headers: {"Content-type":"application/json,charset=UTF-8"},
+        headers: {"Content-type":"application/json"},
         body: JSON.stringify(dados)
-
     })
 
-    if(content.sucess){
+    const results = await response.json();
+    console.log(results);
+    if(results.success){
+        // getUsers();
         alert("Sucesso")
     }else{
         alert("Não foi sucesso")
@@ -22,3 +26,21 @@ button.onclick = async function () {
     }
 
 }
+
+// async function getUsers() {
+//     const response = await fetch("http://localhost:3006/api/users", {
+//         method: "GET",
+//         headers: {"Content-type":"application/json"},
+//     })
+
+//     const results = await response.json();
+   
+//     if(results.success){
+//         console.log(results.data);
+//         alert("Sucesso")
+//     }else{
+//         alert("Não foi sucesso")
+//         console.log(content.sql);
+//     }
+// }
+

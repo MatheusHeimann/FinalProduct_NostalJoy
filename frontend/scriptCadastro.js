@@ -18,29 +18,11 @@ button.onclick = async function () {
     const results = await response.json();
     console.log(results);
     if(results.success){
-        // getUsers();
         alert("Sucesso")
     }else{
         alert("Não foi sucesso")
         console.log(content.sql);
     }
 
+    
 }
-
-// async function getUsers() {
-//     const response = await fetch("http://localhost:3006/api/users", {
-//         method: "GET",
-//         headers: {"Content-type":"application/json"},
-//     })
-
-//     const results = await response.json();
-   
-//     if(results.success){
-//         console.log(results.data);
-//         alert("Sucesso")
-//     }else{
-//         alert("Não foi sucesso")
-//         console.log(content.sql);
-//     }
-// }
-

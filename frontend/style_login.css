@@ -30,6 +30,7 @@ main {
 .login-card {
     background-color: rgb(58, 154, 58);
     padding: 20px;
+    padding-bottom: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 350px;
     display: flex;
@@ -62,6 +63,7 @@ button {
     padding: 5px;
     box-sizing: border-box;
     border: none;
+    margin-bottom: 10px;
 }
 
 button:hover {
@@ -69,3 +71,4 @@ button:hover {
     border-right: 1vh solid rgb(39, 102, 39);
     border-bottom: 1vh solid rgb(39, 102, 39);
 }
+

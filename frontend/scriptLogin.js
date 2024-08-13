@@ -19,6 +19,7 @@ loginButton.onclick = async function () {
     if (results.success) {
         alert("Login bem-sucedido");
         // Redirecionar ou fazer algo após o login
+        window.location.href = "home.html";
     } else {
         alert("Falha no login: " + results.message);
     }

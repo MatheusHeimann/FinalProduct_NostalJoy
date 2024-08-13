@@ -18,7 +18,9 @@ button.onclick = async function () {
     const results = await response.json();
     console.log(results);
     if(results.success){
-        alert("Sucesso")
+        alert("Sucesso");
+        window.location.href = "login.html";
+
     }else{
         alert("Não foi sucesso")
         console.log(content.sql);

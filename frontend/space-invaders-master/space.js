@@ -215,7 +215,7 @@ function detectCollision(a, b) {
 }
 
 function saveHighScore() {
-    let id_usuario = localStorage.getItem('id_usuario');  // Assume user ID is stored in localStorage
+    let id_usuario = localStorage.getItem('id');  // Assume user ID is stored in localStorage
     let id_jogo = 1;  // Set the game ID for Space Invaders, for example
 
     if (!id_usuario) {

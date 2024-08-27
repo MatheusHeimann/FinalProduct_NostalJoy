@@ -67,7 +67,12 @@ async function loginUser(request, response) {
     });
 }
 
+// async function userData(request, response) {
+//     const
+// }
+
 module.exports = {
     storeUser,
     loginUser
+    // userData
 }

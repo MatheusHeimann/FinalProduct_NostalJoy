@@ -67,12 +67,47 @@ async function loginUser(request, response) {
     });
 }
 
+async function saveHighScore(request, response) {
+    let id_usuario = localStorage.getItem('id');  // Assume user ID is stored in localStorage
+    let id_jogo = 1;  // Set the game ID for Space Invaders, for example
+
+    if (!id_usuario) {
+        alert("User not logged in. Cannot save score.");
+        return;
+    }
+
+    let highScoreData = {
+        id_usuario: id_usuario,
+        id_jogo: id_jogo,
+        pontuacao: score  // Send the final score
+    };
+
+    fetch("http://localhost:3006/api/save-highscore", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(highScoreData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("High score saved successfully!");
+        } else {
+            alert("Failed to save high score: " + data.message);
+        }
+    })
+    .catch(error => {
+        console.error("Error saving high score:", error);
+    });
+}
+
+
+
 // async function userData(request, response) {
 //     const
 // }
 
 module.exports = {
     storeUser,
-    loginUser
-    // userData
+    loginUser,
+    saveHighScore
 }

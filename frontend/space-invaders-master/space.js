@@ -1,7 +1,7 @@
+// Parâmetro que pode ser fixo ou dinâmico
+let gameId = 1; // ID do jogo (deve ser obtido do sistema, neste caso estou assumindo como fixo)
+
 //board
-
-
-
 let tileSize = 32;
 let rows = 15;
 let columns = 16;
@@ -12,16 +12,16 @@ let boardHeight = tileSize * rows; // 32 * 16
 let context;
 
 //ship
-let shipWidth = tileSize*2;
+let shipWidth = tileSize * 2;
 let shipHeight = tileSize;
-let shipX = tileSize * columns/2 - tileSize;
-let shipY = tileSize * rows - tileSize*2;
+let shipX = tileSize * columns / 2 - tileSize;
+let shipY = tileSize * rows - tileSize * 2;
 
 let ship = {
-    x : shipX,
-    y : shipY,
-    width : shipWidth,
-    height : shipHeight
+    x: shipX,
+    y: shipY,
+    width: shipWidth,
+    height: shipHeight
 }
 
 let shipImg;
@@ -29,7 +29,7 @@ let shipVelocityX = tileSize; //ship moving speed
 
 //aliens
 let alienArray = [];
-let alienWidth = tileSize*2;
+let alienWidth = tileSize * 2;
 let alienHeight = tileSize;
 let alienX = tileSize;
 let alienY = tileSize;
@@ -47,20 +47,16 @@ let bulletVelocityY = -10; //bullet moving speed
 let score = 0;
 let gameOver = false;
 
-window.onload = function() {
+window.onload = function () {
     board = document.getElementById("board");
     board.width = boardWidth;
     board.height = boardHeight;
     context = board.getContext("2d"); //used for drawing on the board
 
-    //draw initial ship
-    // context.fillStyle="green";
-    // context.fillRect(ship.x, ship.y, ship.width, ship.height);
-
     //load images
     shipImg = new Image();
     shipImg.src = "./ship.png";
-    shipImg.onload = function() {
+    shipImg.onload = function () {
         context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
     }
 
@@ -73,13 +69,13 @@ window.onload = function() {
     document.addEventListener("keyup", shoot);
 }
 
-
-
 function update() {
     requestAnimationFrame(update);
 
     if (gameOver) {
-        saveHighScore();  // Call to save the high score
+        console.log(score);
+        // Chamar a função para enviar o score ao backend
+        onGameEnd(score, gameId);
         return;
     }
     context.clearRect(0, 0, board.width, board.height);
@@ -96,7 +92,7 @@ function update() {
             //if alien touches the borders
             if (alien.x + alien.width >= board.width || alien.x <= 0) {
                 alienVelocityX *= -1;
-                alien.x += alienVelocityX*2;
+                alien.x += alienVelocityX * 2;
 
                 //move all aliens up by one row
                 for (let j = 0; j < alienArray.length; j++) {
@@ -115,7 +111,7 @@ function update() {
     for (let i = 0; i < bulletArray.length; i++) {
         let bullet = bulletArray[i];
         bullet.y += bulletVelocityY;
-        context.fillStyle="white";
+        context.fillStyle = "white";
         context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
 
         //bullet collision with aliens
@@ -137,10 +133,9 @@ function update() {
 
     //next level
     if (alienCount == 0) {
-        //increase the number of aliens in columns and rows by 1
         score += alienColumns * alienRows * 100; //bonus points :)
-        alienColumns = Math.min(alienColumns + 1, columns/2 -2); //cap at 16/2 -2 = 6
-        alienRows = Math.min(alienRows + 1, rows-4);  //cap at 16-4 = 12
+        alienColumns = Math.min(alienColumns + 1, columns / 2 - 2); //cap at 16/2 -2 = 6
+        alienRows = Math.min(alienRows + 1, rows - 4);  //cap at 16-4 = 12
         if (alienVelocityX > 0) {
             alienVelocityX += 0.2; //increase the alien movement speed towards the right
         }
@@ -153,10 +148,9 @@ function update() {
     }
 
     //score
-    context.fillStyle="white";
-    context.font="16px courier";
+    context.fillStyle = "white";
+    context.font = "16px courier";
     context.fillText(score, 5, 20);
-
 }
 
 function moveShip(e) {
@@ -176,12 +170,12 @@ function createAliens() {
     for (let c = 0; c < alienColumns; c++) {
         for (let r = 0; r < alienRows; r++) {
             let alien = {
-                img : alienImg,
-                x : alienX + c*alienWidth,
-                y : alienY + r*alienHeight,
-                width : alienWidth,
-                height : alienHeight,
-                alive : true
+                img: alienImg,
+                x: alienX + c * alienWidth,
+                y: alienY + r * alienHeight,
+                width: alienWidth,
+                height: alienHeight,
+                alive: true
             }
             alienArray.push(alien);
         }
@@ -197,11 +191,11 @@ function shoot(e) {
     if (e.code == "Space") {
         //shoot
         let bullet = {
-            x : ship.x + shipWidth*15/32,
-            y : ship.y,
-            width : tileSize/8,
-            height : tileSize/2,
-            used : false
+            x: ship.x + shipWidth * 15 / 32,
+            y: ship.y,
+            width: tileSize / 8,
+            height: tileSize / 2,
+            used: false
         }
         bulletArray.push(bullet);
     }
@@ -209,8 +203,44 @@ function shoot(e) {
 
 function detectCollision(a, b) {
     return a.x < b.x + b.width &&   //a's top left corner doesn't reach b's top right corner
-           a.x + a.width > b.x &&   //a's top right corner passes b's top left corner
-           a.y < b.y + b.height &&  //a's top left corner doesn't reach b's bottom left corner
-           a.y + a.height > b.y;    //a's bottom left corner passes b's top left corner
+        a.x + a.width > b.x &&   //a's top right corner passes b's top left corner
+        a.y < b.y + b.height &&  //a's top left corner doesn't reach b's bottom left corner
+        a.y + a.height > b.y;    //a's bottom left corner passes b's top left corner
 }
 
+// Função para enviar o score ao backend
+function onGameEnd(score, gameId) {
+    // Recupera o ID do usuário do localStorage
+    const userId = localStorage.getItem('userId');
+    
+    if (!id) {
+        console.error('Erro: userId não encontrado no localStorage');
+        return; // Não prossegue se não houver userId
+    }
+
+    const data = {
+        id_jogo: gameId,
+        id_usuario: id,
+        pontuacao: score
+    };
+
+    fetch('/api/save_highscore', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao salvar o score');
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log('Score salvo com sucesso:', result);
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+    });
+}

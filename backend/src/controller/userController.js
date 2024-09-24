@@ -67,39 +67,39 @@ async function loginUser(request, response) {
     });
 }
 
+// Função para salvar o score do usuário
 async function saveHighScore(request, response) {
-    let id_usuario = localStorage.getItem('id');  // Assume user ID is stored in localStorage
-    let id_jogo = 1;  // Set the game ID for Space Invaders, for example
+    const { id_jogo, id_usuario, pontuacao } = request.body;
 
-    if (!id_usuario) {
-        alert("User not logged in. Cannot save score.");
-        return;
+    // Valida se todos os parâmetros necessários foram enviados
+    if (!id_jogo || !id_usuario || pontuacao === undefined) {
+        return response.status(400).json({
+            success: false,
+            message: "Parâmetros faltando (id_jogo, id_usuario, pontuacao)"
+        });
     }
 
-    let highScoreData = {
-        id_usuario: id_usuario,
-        id_jogo: id_jogo,
-        pontuacao: score  // Send the final score
-    };
+    // Query para inserir o histórico de pontuação
+    const query = "INSERT INTO historico(id_jogo, id_usuario, pontuacao) VALUES(?, ?, ?);";
 
-    fetch("http://localhost:3006/api/save-highscore", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(highScoreData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("High score saved successfully!");
-        } else {
-            alert("Failed to save high score: " + data.message);
+    // Executa a query com os parâmetros fornecidos
+    connection.query(query, [id_jogo, id_usuario, pontuacao], (err, results) => {
+        if (err) {
+            return response.status(500).json({
+                success: false,
+                message: "Erro ao salvar o score no banco de dados",
+                error: err
+            });
         }
-    })
-    .catch(error => {
-        console.error("Error saving high score:", error);
+
+        // Resposta de sucesso
+        response.status(200).json({
+            success: true,
+            message: "Score salvo com sucesso",
+            data: results
+        });
     });
 }
-
 
 
 // async function userData(request, response) {

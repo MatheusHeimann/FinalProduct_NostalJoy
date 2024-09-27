@@ -1,5 +1,8 @@
+
 // Parâmetro que pode ser fixo ou dinâmico
-let gameId = 1; // ID do jogo (deve ser obtido do sistema, neste caso estou assumindo como fixo)
+let id_jogo = 1; // ID do jogo (deve ser obtido do sistema, neste caso estou assumindo como fixo)
+
+
 
 //board
 let tileSize = 32;
@@ -38,7 +41,7 @@ let alienImg;
 let alienRows = 2;
 let alienColumns = 3;
 let alienCount = 0; //number of aliens to defeat
-let alienVelocityX = 1; //alien moving speed
+let alienVelocityX = 10; //alien moving speed
 
 //bullets
 let bulletArray = [];
@@ -69,13 +72,27 @@ window.onload = function () {
     document.addEventListener("keyup", shoot);
 }
 
-function update() {
+async function update() {
     requestAnimationFrame(update);
 
-    if (gameOver) {
+    if (gameOver == true) {
         console.log(score);
-        // Chamar a função para enviar o score ao backend
-        onGameEnd(score, gameId);
+        // Chamar a rota para enviar o score ao backend
+        let id_usuario = localStorage.getItem('id');
+        let data = {id_jogo, id_usuario, score}
+
+        const response = await fetch('', {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            data: JSON.stringify(data)
+        })
+
+        const results = await response.json();
+
+        console.log(results)
+        
         return;
     }
     context.clearRect(0, 0, board.width, board.height);
@@ -206,41 +223,4 @@ function detectCollision(a, b) {
         a.x + a.width > b.x &&   //a's top right corner passes b's top left corner
         a.y < b.y + b.height &&  //a's top left corner doesn't reach b's bottom left corner
         a.y + a.height > b.y;    //a's bottom left corner passes b's top left corner
-}
-
-// Função para enviar o score ao backend
-function onGameEnd(score, gameId) {
-    // Recupera o ID do usuário do localStorage
-    const userId = localStorage.getItem('userId');
-    
-    if (!id) {
-        console.error('Erro: userId não encontrado no localStorage');
-        return; // Não prossegue se não houver userId
-    }
-
-    const data = {
-        id_jogo: gameId,
-        id_usuario: id,
-        pontuacao: score
-    };
-
-    fetch('/api/save_highscore', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro ao salvar o score');
-        }
-        return response.json();
-    })
-    .then(result => {
-        console.log('Score salvo com sucesso:', result);
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-    });
 }

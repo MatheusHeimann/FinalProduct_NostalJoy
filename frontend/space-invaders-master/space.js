@@ -47,7 +47,7 @@ let alienVelocityX = 10; //alien moving speed
 let bulletArray = [];
 let bulletVelocityY = -10; //bullet moving speed
 
-let score = 0;
+let pontuacao = 0;
 let gameOver = false;
 
 window.onload = function () {
@@ -76,12 +76,12 @@ async function update() {
     requestAnimationFrame(update);
 
     if (gameOver == true) {
-        console.log(score);
+        console.log(pontuacao);
         // Chamar a rota para enviar o score ao backend
         let id_usuario = localStorage.getItem('id');
-        let data = {id_jogo, id_usuario, score}
+        let data = {id_jogo, id_usuario, pontuacao}
 
-        const response = await fetch('', {
+        const response = await fetch('http://localhost:3006/api/save_highscore', {
             method: "POST",
             headers: {
                 "Content-Type":"application/json"
@@ -138,7 +138,7 @@ async function update() {
                 bullet.used = true;
                 alien.alive = false;
                 alienCount--;
-                score += 100;
+                pontuacao += 100;
             }
         }
     }
@@ -150,7 +150,7 @@ async function update() {
 
     //next level
     if (alienCount == 0) {
-        score += alienColumns * alienRows * 100; //bonus points :)
+        pontuacao += alienColumns * alienRows * 100; //bonus points :)
         alienColumns = Math.min(alienColumns + 1, columns / 2 - 2); //cap at 16/2 -2 = 6
         alienRows = Math.min(alienRows + 1, rows - 4);  //cap at 16-4 = 12
         if (alienVelocityX > 0) {
@@ -167,7 +167,7 @@ async function update() {
     //score
     context.fillStyle = "white";
     context.font = "16px courier";
-    context.fillText(score, 5, 20);
+    context.fillText(pontuacao, 5, 20);
 }
 
 function moveShip(e) {

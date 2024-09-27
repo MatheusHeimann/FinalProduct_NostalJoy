@@ -102,9 +102,7 @@ async function saveHighScore(request, response) {
 }
 
 
-// async function userData(request, response) {
-//     const
-// }
+
 
 module.exports = {
     storeUser,

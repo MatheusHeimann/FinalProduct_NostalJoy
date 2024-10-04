@@ -41,7 +41,7 @@ let alienImg;
 let alienRows = 2;
 let alienColumns = 3;
 let alienCount = 0; //number of aliens to defeat
-let alienVelocityX = 10; //alien moving speed
+let alienVelocityX = 5; //alien moving speed
 
 //bullets
 let bulletArray = [];
@@ -76,24 +76,32 @@ async function update() {
     requestAnimationFrame(update);
 
     if (gameOver == true) {
-        console.log(pontuacao);
+        
         // Chamar a rota para enviar o score ao backend
         let id_usuario = localStorage.getItem('id');
         let data = {id_jogo, id_usuario, pontuacao}
+
+        console.log(data)
 
         const response = await fetch('http://localhost:3006/api/save_highscore', {
             method: "POST",
             headers: {
                 "Content-Type":"application/json"
             },
-            data: JSON.stringify(data)
+            body: JSON.stringify(data)
         })
 
         const results = await response.json();
 
         console.log(results)
         
+        alert("Você perdeu!")
+     
+
+        window.location.reload();
+
         return;
+
     }
     context.clearRect(0, 0, board.width, board.height);
 

@@ -70,7 +70,7 @@ async function loginUser(request, response) {
 // Função para salvar o score do usuário
 async function saveHighScore(request, response) {
     const { id_jogo, id_usuario, pontuacao } = request.body;
-
+    console.log(request.body)
     // Valida se todos os parâmetros necessários foram enviados
     if (!id_jogo || !id_usuario || pontuacao === undefined) {
         return response.status(400).json({

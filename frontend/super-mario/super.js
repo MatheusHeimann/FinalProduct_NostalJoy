@@ -29,21 +29,21 @@ const player = {
 
 // Moedas
 const coins = [
-    { x: 290, y: 320, width: 20, height: 20, collected: false, originalPosition: { x: 290, y: 320 } },
-    { x: 500, y: 220, width: 20, height: 20, collected: false, originalPosition: { x: 500, y: 220 } },
+    { x: 250, y: 320, width: 20, height: 20, collected: false, originalPosition: { x: 250, y: 320 } },
+    { x: 450, y: 250, width: 20, height: 20, collected: false, originalPosition: { x: 450, y: 250 } },
     // ... adicione mais moedas aqui
 ];
 
 // Platform Object
 const platforms = [
-    {x: 200, y: 350, width: 200, height: 20},
-    {x: 400, y: 250, width: 200, height: 20},
-    {x: 600, y: 150, width: 150, height: 20}
+    {x: 140, y: 350, width: 190, height: 20},
+    {x: 350, y: 280, width: 190, height: 20},
+    {x: 560, y: 210, width: 190, height: 20}
 ];
 
 // Enemy Object
 const enemies = [
-    {x: 600, y: 300, width: 40, height: 40, velocityX: 2, color: 'green'}
+    {x: 600, y: 310, width: 40, height: 40, velocityX: 2, color: 'green'}
 ];
 
 function drawCoins() {
@@ -103,12 +103,12 @@ function checkCollision(a, b) {
 function handlePlatformCollision() {
     platforms.forEach(platform => {
 
-        const tolerance = 2;
+        const tolerance = 5;
 
         // Colisão por baixo (código corrigido)
         if (player.y + player.height <= platform.y + tolerance &&
             player.y + player.height + player.velocityY >= platform.y &&
-            (player.x + player.width > platform.x && player.x < platform.x + platform.width ||
+            (player.x + player.width >= platform.x && player.x <= platform.x + platform.width ||
              player.x + player.width >= platform.x && player.x <= platform.x + platform.width)) {
             player.velocityY = 0;
             player.y = platform.y - player.height;
@@ -118,24 +118,26 @@ function handlePlatformCollision() {
         // Colisão por cima (código corrigido)
         if (player.y >= platform.y + platform.height &&
             player.y + player.velocityY <= platform.y + platform.height &&
-            (player.x + player.width > platform.x && player.x < platform.x + platform.width ||
+            (player.x + player.width > platform.x && player.x <= platform.x + platform.width ||
              player.x + player.width >= platform.x && player.x <= platform.x + platform.width)) {
             player.velocityY = 0;
             player.y = platform.y + platform.height;
         }
+
         // Colisão pela esquerda
         if (player.x + player.width <= platform.x &&
-                 player.x + player.width + player.velocityX >= platform.x &&
-                 player.y + player.height > platform.y &&
-                 player.y < platform.y + platform.height) {
+            player.x + player.width + player.velocityX >= platform.x &&
+            player.y + player.height >= platform.y &&
+            player.y <= platform.y + platform.height) {
             player.velocityX = 0;
             player.x = platform.x - player.width; // Ajusta a posição para a esquerda da plataforma
-        } 
+        }
+
         // Colisão pela direita
         if (player.x >= platform.x + platform.width &&
-                 player.x + player.velocityX <= platform.x + platform.width &&
-                 player.y + player.height > platform.y &&
-                 player.y < platform.y + platform.height) {
+            player.x + player.velocityX <= platform.x + platform.width &&
+            player.y + player.height >= platform.y &&
+            player.y <= platform.y + platform.height) {
             player.velocityX = 0;
             player.x = platform.x + platform.width; // Ajusta a posição para a direita da plataforma
         }
@@ -211,7 +213,7 @@ async function update() {
         return;
 
     }
-    
+
     // Prevent update loop during Game Over
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);

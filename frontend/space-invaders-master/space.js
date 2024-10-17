@@ -73,16 +73,16 @@ window.onload = function () {
 }
 
 async function update() {
-    requestAnimationFrame(update);
-
+    
     if (gameOver == true) {
+
         
         // Chamar a rota para enviar o score ao backend
         let id_usuario = localStorage.getItem('id');
         let data = {id_jogo, id_usuario, pontuacao}
-
+        
         console.log(data)
-
+        
         const response = await fetch('http://localhost:3006/api/save_highscore', {
             method: "POST",
             headers: {
@@ -90,19 +90,38 @@ async function update() {
             },
             body: JSON.stringify(data)
         })
-
+        
         const results = await response.json();
-
+        
         console.log(results)
         
-        alert("Você perdeu!")
-     
+        const popup = document.createElement('div');
+        popup.classList.add('popup');
+        popup.innerHTML = `
+            <h2>Game Over!</h2>
+            <p>Sua pontuação: ${pontuacao}</p>
+            <button class="play-again">Jogar novamente</button>
+            <button class="back-to-menu">Voltar para a seleção de jogos</button>
+        `;
 
-        window.location.reload();
+        document.body.appendChild(popup);
 
+        // Add an event listener to the play again button
+        const playAgainButton = popup.querySelector('.play-again');
+        playAgainButton.addEventListener('click', () => {
+            popup.remove();
+            window.location.reload();
+        });
+        const backToMenuButton = popup.querySelector('.back-to-menu');
+        backToMenuButton.addEventListener('click', () => {
+            popup.remove();
+            window.location.href = "../select.html";
+        });
+        
         return;
 
     }
+    requestAnimationFrame(update);
     context.clearRect(0, 0, board.width, board.height);
 
     //ship

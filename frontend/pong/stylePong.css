@@ -14,6 +14,14 @@ p{
 	box-sizing: border-box; 
 } 
 
+#back {
+    cursor: pointer;
+    transform: rotate(180deg);
+    border: none;
+    background: none;
+}
+
+
 body { 
 	height: 100vh; 
 	width: 100vw; 

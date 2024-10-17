@@ -36,14 +36,14 @@ const coins = [
 
 // Platform Object
 const platforms = [
-    {x: 140, y: 350, width: 190, height: 20},
-    {x: 350, y: 280, width: 190, height: 20},
-    {x: 560, y: 210, width: 190, height: 20}
+    { x: 140, y: 350, width: 190, height: 20 },
+    { x: 350, y: 280, width: 190, height: 20 },
+    { x: 560, y: 210, width: 190, height: 20 }
 ];
 
 // Enemy Object
 const enemies = [
-    {x: 600, y: 310, width: 40, height: 40, velocityX: 2, color: 'green'}
+    { x: 600, y: 310, width: 40, height: 40, velocityX: 2, color: 'green' }
 ];
 
 function drawCoins() {
@@ -95,9 +95,9 @@ function moveEnemies() {
 
 function checkCollision(a, b) {
     return a.x < b.x + b.width &&
-           a.x + a.width > b.x &&
-           a.y < b.y + b.height &&
-           a.y + a.height > b.y;
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y;
 }
 
 function handlePlatformCollision() {
@@ -109,7 +109,7 @@ function handlePlatformCollision() {
         if (player.y + player.height <= platform.y + tolerance &&
             player.y + player.height + player.velocityY >= platform.y &&
             (player.x + player.width >= platform.x && player.x <= platform.x + platform.width ||
-             player.x + player.width >= platform.x && player.x <= platform.x + platform.width)) {
+                player.x + player.width >= platform.x && player.x <= platform.x + platform.width)) {
             player.velocityY = 0;
             player.y = platform.y - player.height;
             isJumping = false;
@@ -119,7 +119,7 @@ function handlePlatformCollision() {
         if (player.y >= platform.y + platform.height &&
             player.y + player.velocityY <= platform.y + platform.height &&
             (player.x + player.width > platform.x && player.x <= platform.x + platform.width ||
-             player.x + player.width >= platform.x && player.x <= platform.x + platform.width)) {
+                player.x + player.width >= platform.x && player.x <= platform.x + platform.width)) {
             player.velocityY = 0;
             player.y = platform.y + platform.height;
         }
@@ -154,8 +154,29 @@ function handleCollisions() {
             if (!gameOver) {
                 gameOver = true;
                 setTimeout(() => {
-                    alert(`Game Over! Your score: ${pontuacao}`);
-                    resetGame();
+                    const popup = document.createElement('div');
+                    popup.classList.add('popup');
+                    popup.innerHTML = `
+            <h2>Game Over!</h2>
+            <p>Sua pontuação: ${pontuacao}</p>
+            <button class="play-again">Jogar novamente</button>
+            <button class="back-to-menu">Voltar para a seleção de jogos</button>
+        `;
+
+                    document.body.appendChild(popup);
+
+                    // Add an event listener to the play again button
+                    const playAgainButton = popup.querySelector('.play-again');
+                    playAgainButton.addEventListener('click', () => {
+                        popup.remove(); 
+                        resetGame();
+                    });
+                    const backToMenuButton = popup.querySelector('.back-to-menu');
+                    backToMenuButton.addEventListener('click', () => {
+                        popup.remove();
+                        window.location.href = "../select.html";
+                    });
+                    
                 }, 100);
             }
         }
@@ -186,17 +207,17 @@ function updateScore() {
 
 async function update() {
     if (gameOver == true) {
-        
+
         // Chamar a rota para enviar o score ao backend
         let id_usuario = localStorage.getItem('id');
-        let data = {id_jogo, id_usuario, pontuacao}
+        let data = { id_jogo, id_usuario, pontuacao }
 
         console.log(data)
 
         const response = await fetch('http://localhost:3006/api/save_highscore', {
             method: "POST",
             headers: {
-                "Content-Type":"application/json"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
         })
@@ -204,11 +225,6 @@ async function update() {
         const results = await response.json();
 
         console.log(results)
-        
-        alert("Você perdeu!")
-     
-
-        window.location.reload();
 
         return;
 

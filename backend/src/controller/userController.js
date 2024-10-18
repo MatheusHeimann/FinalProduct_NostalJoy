@@ -4,7 +4,7 @@ async function storeUser(request, response) {
     const params = [
         request.body.nome,
         request.body.email,
-        request.body.senha 
+        request.body.senha
     ];
 
     const query = "INSERT INTO usuario(nome,email,senha) VALUES(?,?,?);";
@@ -102,10 +102,51 @@ async function saveHighScore(request, response) {
 }
 
 
+async function scoreUser(request, response) {
+    const { id_usuario } = request.body;
 
+    const query = `SELECT id_jogo, MAX(pontuacao) AS maior_pontuacao
+                   FROM historico
+                   WHERE id_usuario = ?
+                   GROUP BY id_jogo;`;
+
+    connection.query(query, [id_usuario], (err, results) => {
+        if (err) {
+            return response.status(500).json({
+                success: false,
+                message: "Erro no servidor",
+                error: err
+            });
+        }
+
+        if (results.length > 0) {
+            // Inicia a construção da string HTML
+            let html = '<ul>';
+            results.forEach(row => {
+                // variavel que recebe o return da função
+                // Substitua 'nome_do_jogo' pela lógica correta para obter o nome do jogo a partir do id_jogo
+                const nome_do_jogo = row.id_jogo; // Ajuste isso para pegar o nome real do jogo
+                html += `<li>${nome_do_jogo} - Pontuação: ${row.maior_pontuacao}</li>`;
+            });
+            html += '</ul>';
+
+            return response.send(html);
+        } else {
+            return response.status(404).json({
+                success: false,
+                message: "Request não encontrado"
+            });
+        }
+    });
+}
+
+
+// fazer uma função que faça um select pegando o nome do jogo a partir do id_jogo
+// fazer um return para a variavel 
 
 module.exports = {
     storeUser,
     loginUser,
-    saveHighScore
+    saveHighScore,
+    scoreUser
 }

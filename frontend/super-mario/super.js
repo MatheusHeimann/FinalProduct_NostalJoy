@@ -30,20 +30,20 @@ const player = {
 // Moedas
 const coins = [
     { x: 250, y: 320, width: 20, height: 20, collected: false, originalPosition: { x: 250, y: 320 } },
-    { x: 450, y: 250, width: 20, height: 20, collected: false, originalPosition: { x: 450, y: 250 } },
+    { x: 450, y: 240, width: 20, height: 20, collected: false, originalPosition: { x: 450, y: 240 } },
     // ... adicione mais moedas aqui
 ];
 
 // Platform Object
 const platforms = [
     { x: 140, y: 350, width: 190, height: 20 },
-    { x: 350, y: 280, width: 190, height: 20 },
-    { x: 560, y: 210, width: 190, height: 20 }
+    { x: 350, y: 270, width: 190, height: 20 },
+    { x: 560, y: 190, width: 190, height: 20 }
 ];
 
 // Enemy Object
 const enemies = [
-    { x: 600, y: 310, width: 40, height: 40, velocityX: 2, color: 'green' }
+    { x: 600, y: 305, width: 40, height: 40, velocityX: 2, color: 'green' }
 ];
 
 function drawCoins() {

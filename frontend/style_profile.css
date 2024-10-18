@@ -1,0 +1,52 @@
+@font-face {
+    font-family: 'pixel';
+    src: url('./VCR_OSD_MONO_1.001.ttf') format('truetype');
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'pixel';
+}
+
+body{
+    background-color: blueviolet;
+}
+
+header{
+    display: block;
+}
+
+#back {
+    cursor: pointer;
+    transform: rotate(180deg);
+    border: none;
+    background: none;
+    margin: 7vh;
+    position: absolute;
+}
+
+img {
+    width: 30px;
+    height: 30px;
+}
+
+.profile-container {
+    text-align: center;
+    /* margin: 50px auto; */
+}
+
+main{
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3em;
+}
+
+#title{
+    color: whitesmoke;
+    font-size: 60px;
+    margin-top: 15vh;
+}
+

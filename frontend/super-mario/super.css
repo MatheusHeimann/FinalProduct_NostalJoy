@@ -1,15 +1,23 @@
 body {
+    background-color: rgb(69, 69, 247);
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: skyblue;
 }
 
 canvas {
     border: 1px solid black;
+    background-image: url(../assets/background-super.jpeg);
+    background-repeat: repeat-x;
+    background-size: cover;
+    /* Ensure the canvas doesn't cover the entire body */
+    /* width: 800px;
+    height: 600px;  */
 }
+
+
 
 .popup {
     position: fixed;

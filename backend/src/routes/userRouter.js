@@ -54,6 +54,6 @@ router.post('/login', loginUser); // Nova rota para login
  */
 router.post('/save_highscore', saveHighScore) // Rota pra salvar o highscore
 
-router.get('/highScore', scoreUser) // Busca a pontuação máxima do usuario em cada jogo 
+router.post('/highScore', scoreUser) // Busca a pontuação máxima do usuario em cada jogo 
 
 module.exports = router;

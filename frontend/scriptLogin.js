@@ -21,6 +21,7 @@ loginButton.onclick = async function () {
         console.log('Storing id:', results.user.id);  // Debugging
         // Redirecionar ou fazer algo após o login
         localStorage.setItem('id', results.user.id);  // Store user ID
+        localStorage.setItem('name', results.user.nome)
         window.location.href = "home.html";
         
     } else {

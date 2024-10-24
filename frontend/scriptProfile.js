@@ -1,10 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
     const id_usuario = localStorage.getItem('id');
+    const nome = localStorage.getItem('name');
+    console.log(nome, id_usuario);
+
+    // Exibe o nome do usuário no elemento com ID "title"
+    if (nome) {
+        document.getElementById('title').innerText = `Bem-vindo, ${nome}!`;
+    } else {
+        document.getElementById('title').innerText = 'Bem-vindo!';
+    }
+
     // Função para buscar as pontuações do backend
     async function fetchScores() {
         try {
             const response = await fetch(`http://localhost:3006/api/highScore`, {
-                method: 'POST', // Altere o método para POST
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -24,6 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Chama a função para buscar as pontuações ao carregar a página
-    fetchScores();
+    // Chama as funções para buscar as pontuações ao carregar a página
+    if (id_usuario) {
+        fetchScores();
+    }
 });

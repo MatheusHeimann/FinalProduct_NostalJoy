@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { storeUser, loginUser, saveHighScore, scoreUser } = require('../controller/userController');
+const { storeUser, loginUser, saveHighScore, scoreUser, getUserName } = require('../controller/userController');
 
 /**
  *@swagger
@@ -55,5 +55,6 @@ router.post('/login', loginUser); // Nova rota para login
 router.post('/save_highscore', saveHighScore) // Rota pra salvar o highscore
 
 router.post('/highScore', scoreUser) // Busca a pontuação máxima do usuario em cada jogo 
+
 
 module.exports = router;

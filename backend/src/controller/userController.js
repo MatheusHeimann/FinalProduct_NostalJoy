@@ -104,6 +104,7 @@ async function saveHighScore(request, response) {
 
 async function scoreUser(request, response) {
     const { id_usuario } = request.body;
+    console.log(id_usuario);
 
     const query = `SELECT id_jogo, MAX(pontuacao) AS maior_pontuacao
                    FROM historico
@@ -149,4 +150,5 @@ module.exports = {
     loginUser,
     saveHighScore,
     scoreUser
+    
 }

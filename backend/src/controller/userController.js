@@ -106,10 +106,14 @@ async function scoreUser(request, response) {
     const { id_usuario } = request.body;
     console.log(id_usuario);
 
-    const query = `SELECT id_jogo, MAX(pontuacao) AS maior_pontuacao
-                   FROM historico
-                   WHERE id_usuario = ?
-                   GROUP BY id_jogo;`;
+    const query = `
+    SELECT id_jogo, 
+           jogos.nome_jogo AS nome_jogo, 
+           MAX(historico.pontuacao) AS maior_pontuacao
+    FROM historico
+    INNER JOIN jogos ON historico.id_jogo = jogos.id
+    WHERE historico.id_usuario = 3
+    GROUP BY historico.id_jogo, jogos.nome_jogo;`;
 
     connection.query(query, [id_usuario], (err, results) => {
         if (err) {
@@ -126,7 +130,7 @@ async function scoreUser(request, response) {
             results.forEach(row => {
                 // variavel que recebe o return da função
                 // Substitua 'nome_do_jogo' pela lógica correta para obter o nome do jogo a partir do id_jogo
-                const nome_do_jogo = row.id_jogo; // Ajuste isso para pegar o nome real do jogo
+                const nome_do_jogo = row.nome_jogo; // Ajuste isso para pegar o nome real do jogo
                 html += `<li>${nome_do_jogo} - Pontuação: ${row.maior_pontuacao}</li>`;
             });
             html += '</ul>';

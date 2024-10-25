@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { storeUser, loginUser, saveHighScore, scoreUser, getUserName } = require('../controller/userController');
+const { storeUser, loginUser, saveHighScore, scoreUser } = require('../controller/userController');
 
 /**
  * @swagger

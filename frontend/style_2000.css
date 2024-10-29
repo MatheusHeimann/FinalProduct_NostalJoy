@@ -47,6 +47,11 @@ header p{
     align-items: center;
 }
 
+a{
+    text-decoration: none;
+}
+
+
 .info_jogo{
     align-items: center;
     display: flex;
@@ -67,3 +72,9 @@ header p{
     padding-left: 10vw;
     padding-right: 10vw;
 } 
+
+.game_name{
+    font-size: 30px;
+    color: whitesmoke;
+    margin-bottom: 10px;
+}

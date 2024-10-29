@@ -112,7 +112,7 @@ async function scoreUser(request, response) {
            MAX(historico.pontuacao) AS maior_pontuacao
     FROM historico
     INNER JOIN jogos ON historico.id_jogo = jogos.id
-    WHERE historico.id_usuario = 3
+    WHERE historico.id_usuario = ?
     GROUP BY historico.id_jogo, jogos.nome_jogo;`;
 
     connection.query(query, [id_usuario], (err, results) => {

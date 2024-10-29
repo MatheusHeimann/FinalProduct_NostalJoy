@@ -57,6 +57,10 @@ header p{
     padding: 1%;
 }
 
+a{
+    text-decoration: none;
+}
+
 img {
     width: 20%;
     height: 20%;
@@ -75,4 +79,10 @@ img {
     padding-left: 10vw;
     padding-right: 10vw;
 } 
+
+.game_name{
+    font-size: 30px;
+    color: whitesmoke;
+    margin-bottom: 10px;
+}
 

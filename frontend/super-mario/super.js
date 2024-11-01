@@ -8,7 +8,7 @@ let id_jogo = 2;
 
 const gravity = 0.5;
 
-
+let scrollOffset = 0;
 let isJumping = false;
 let pontuacao = 0;
 let gameOver = false;
@@ -29,8 +29,13 @@ const player = {
 
 // Moedas
 const coins = [
-    { x: 250, y: 320, width: 20, height: 20, collected: false, originalPosition: { x: 250, y: 320 } },
-    { x: 450, y: 240, width: 20, height: 20, collected: false, originalPosition: { x: 450, y: 240 } },
+    { x: 225, y: 310, width: 20, height: 20, collected: false, originalPosition: { x: 225, y: 310 } },
+    { x: 445, y: 440, width: 20, height: 20, collected: false, originalPosition: { x: 445, y: 440 } },
+    { x: 740, y: 160, width: 20, height: 20, collected: false, originalPosition: { x: 740, y: 160 } },
+    { x: 1200, y: 150, width: 20, height: 20, collected: false, originalPosition: { x: 1200, y: 150 } },
+    { x: 1250, y: 200, width: 20, height: 20, collected: false, originalPosition: { x: 1250, y: 200 } },
+    { x: 1300, y: 250, width: 20, height: 20, collected: false, originalPosition: { x: 1300, y: 250 } },
+    { x: 1640, y: 240, width: 20, height: 20, collected: false, originalPosition: { x: 1640, y: 240 } },
     // ... adicione mais moedas aqui
 ];
 
@@ -38,39 +43,44 @@ const coins = [
 const platforms = [
     { x: 140, y: 350, width: 190, height: 20 },
     { x: 350, y: 270, width: 190, height: 20 },
-    { x: 560, y: 190, width: 190, height: 20 }
+    { x: 620, y: 200, width: 190, height: 20 },
+    { x: 930, y: 150, width: 190, height: 20 },
+    { x: 1260, y: 300, width: 190, height: 20 },
+    { x: 1560, y: 290, width: 190, height: 20 }
 ];
 
 // Enemy Object
 const enemies = [
-    { x: 600, y: 305, width: 40, height: 40, velocityX: 2, color: 'green' }
+    { x: 600, y: 305, width: 40, height: 40, velocityX: 2, color: 'green', originalPosition: { x: 600, y: 305 }},
+    { x: 300, y: 605, width: 40, height: 40, velocityX: 2, color: 'green', originalPosition: { x: 300, y: 605 }},
+    { x: 100, y: 1305, width: 40, height: 40, velocityX: 2, color: 'green', originalPosition: { x: 100, y: 1305 }}
 ];
 
-function drawCoins() {
+function drawPlayer(offset) {
+    ctx.fillStyle = player.color;
+    ctx.fillRect(player.x - offset, player.y, player.width, player.height);
+}
+
+function drawPlatforms(offset) {
+    ctx.fillStyle = 'brown';
+    platforms.forEach(platform => {
+        ctx.fillRect(platform.x - offset, platform.y, platform.width, platform.height);
+    });
+}
+
+function drawCoins(offset) {
     ctx.fillStyle = 'yellow';
     coins.forEach(coin => {
         if (!coin.collected) {
-            ctx.fillRect(coin.x, coin.y, coin.width, coin.height);
+            ctx.fillRect(coin.x - offset, coin.y, coin.width, coin.height);
         }
     });
 }
 
-function drawPlayer() {
-    ctx.fillStyle = player.color;
-    ctx.fillRect(player.x, player.y, player.width, player.height);
-}
-
-function drawPlatforms() {
-    ctx.fillStyle = 'brown';
-    platforms.forEach(platform => {
-        ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
-    });
-}
-
-function drawEnemies() {
+function drawEnemies(offset) {
     enemies.forEach(enemy => {
         ctx.fillStyle = enemy.color;
-        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        ctx.fillRect(enemy.x - offset, enemy.y, enemy.width, enemy.height);
     });
 }
 
@@ -168,7 +178,7 @@ function handleCollisions() {
                     // Add an event listener to the play again button
                     const playAgainButton = popup.querySelector('.play-again');
                     playAgainButton.addEventListener('click', () => {
-                        popup.remove(); 
+                        popup.remove();
                         resetGame();
                     });
                     const backToMenuButton = popup.querySelector('.back-to-menu');
@@ -176,7 +186,7 @@ function handleCollisions() {
                         popup.remove();
                         window.location.href = "../select.html";
                     });
-                    
+
                 }, 100);
             }
         }
@@ -190,6 +200,11 @@ function resetGame() {
     player.velocityX = 0;
     player.velocityY = 0;
     pontuacao = 0;
+    scrollOffset = 0;
+    enemies.forEach(enemy =>{
+        enemy.x = enemy.originalPosition.x
+        enemy.y = enemy.originalPosition.y
+    })
     coins.forEach(coin => {
         coin.x = coin.originalPosition.x;
         coin.y = coin.originalPosition.y;
@@ -230,37 +245,50 @@ async function update() {
 
     }
 
-    // Prevent update loop during Game Over
-
+    // Limpa o canvas a cada frame
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-
-
-    // Apply gravity
-    player.velocityY += gravity;
-    player.y += player.velocityY;
+    // Atualiza a posição do jogador com base na velocidade
     player.x += player.velocityX;
+    player.y += player.velocityY;
 
-    // Prevent player from falling off the canvas
-    if (player.y + player.height >= canvas.height) {
-        player.y = canvas.height - player.height;
-        isJumping = false;
+    // Aplica a gravidade
+    player.velocityY += gravity;
+
+    // Checa colisões com as plataformas
+    handlePlatformCollision();
+
+    // Limita o movimento do jogador aos limites do canvas
+    if (player.x < 0) {
+        player.x = 0;
+        player.velocityX = 0; // Opcional: para o jogador na borda esquerda
     }
 
-    // Prevent player from going out of bounds horizontally
-    if (player.x < 0) player.x = 0;
-    if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+    // Impede o jogador de cair abaixo do canvas
+    if (player.y + player.height > canvas.height) {
+        player.y = canvas.height - player.height;
+        player.velocityY = 0; 
+        isJumping = false // Para o movimento vertical
+    }
 
-    drawPlayer();
-    drawPlatforms();
-    drawEnemies();
-    drawCoins();
+    // Atualiza o offset da câmera baseado no movimento do jogador
+    scrollOffset += player.velocityX;
+
+    // Desenha os elementos com o offset da câmera
+    drawPlayer(scrollOffset);
+    drawPlatforms(scrollOffset);
+    drawCoins(scrollOffset);
+    drawEnemies(scrollOffset);
+
+    // Checa colisões com moedas e inimigos
     handleCoinCollision();
     moveEnemies();
     handleCollisions();
+
+    // Atualiza a pontuação
     updateScore();
 
-
+    // Chama a função update novamente no próximo frame
     requestAnimationFrame(update);
 }
 

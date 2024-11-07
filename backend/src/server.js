@@ -14,7 +14,7 @@ const swaggerOptions = {
       version: '1.0.0',
       description: 'API CRUD para gerenciar tarefas',
     },
-    servers: [{ url: 'http://localhost:3006' }],
+    servers: [{ url: 'http://bipyvggoxvlqujm8awc6-mysql.services.clever-cloud.com:3006' }],
   },
   apis: [`${__dirname}/routes/*.js`], // Certifique-se de que suas rotas estejam no caminho correto
 };

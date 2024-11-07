@@ -20,7 +20,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:3006",
+        url: "http://bipyvggoxvlqujm8awc6-mysql.services.clever-cloud.com:3006",
         description: "Servidor de Desenvolvimento"
       }
     ],

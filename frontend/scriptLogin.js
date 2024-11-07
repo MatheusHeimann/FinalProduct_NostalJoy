@@ -7,7 +7,7 @@ loginButton.onclick = async function () {
     let dados = { email, senha };
     console.log(dados);
 
-    const response = await fetch("http://localhost:3006/api/login", {
+    const response = await fetch("http://bipyvggoxvlqujm8awc6-mysql.services.clever-cloud.com:3006/api/login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(dados)

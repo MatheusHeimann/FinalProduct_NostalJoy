@@ -124,14 +124,6 @@ async function scoreUser(request, response) {
             });
         }
 
-        if (results.length = 0) {
-            return response.status(1).json({
-                success: true,
-                message: "Nenhuma pontuação gravada, jogue alguma coisa!",
-                error: err
-            });
-        }
-
         if (results.length > 0) {
             // Inicia a construção da string HTML
             let html = '<ul>';

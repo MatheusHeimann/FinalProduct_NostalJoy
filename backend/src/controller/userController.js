@@ -126,12 +126,12 @@ async function scoreUser(request, response) {
 
         if (results.length > 0) {
             // Inicia a construção da string HTML
-            let html = '<ul>';
+            let html = '<ul class = "list_score">';
             results.forEach(row => {
                 // variavel que recebe o return da função
                 // Substitua 'nome_do_jogo' pela lógica correta para obter o nome do jogo a partir do id_jogo
                 const nome_do_jogo = row.nome_jogo; // Ajuste isso para pegar o nome real do jogo
-                html += `<li>${nome_do_jogo} - Pontuação: ${row.maior_pontuacao}</li>`;
+                html += `<li class = "list_item">${nome_do_jogo} - Pontuação: ${row.maior_pontuacao}</li>`;
             });
             html += '</ul>';
 

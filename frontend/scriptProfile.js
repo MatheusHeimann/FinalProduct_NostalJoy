@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Função para buscar as pontuações do backend
     async function fetchScores() {
         try {
-            const response = await fetch(`http://bipyvggoxvlqujm8awc6-mysql.services.clever-cloud.com:3006/api/highScore`, {
+            const response = await fetch(`mysql://ueuhvy1q22pnq6nb:hluATN3GfuUD3sADXQnE@bipyvggoxvlqujm8awc6-mysql.services.clever-cloud.com:3306/bipyvggoxvlqujm8awc6/api/highScore`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

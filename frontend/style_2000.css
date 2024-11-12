@@ -60,6 +60,12 @@ a{
     padding: 1%;
 }
 
+img {
+    width: 20%;
+    height: 20%;
+
+}
+
 #play_game_2, 
 #play_game_1{
     cursor: pointer;

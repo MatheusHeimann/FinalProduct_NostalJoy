@@ -9,7 +9,7 @@ button.onclick = async function () {
 
     let dados = { nome, email, senha }
     console.log(dados);
-    const response = await fetch("bipyvggoxvlqujm8awc6-mysql.services.clever-cloud.com3:006/bipyvggoxvlqujm8awc6/api/register", {
+    const response = await fetch("http://localhost:3006/api/register", {
         method: "POST",
         headers: {"Content-type":"application/json"},
         body: JSON.stringify(dados)

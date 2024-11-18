@@ -1,10 +1,16 @@
+@font-face {
+    font-family: 'pixel';
+    src: url('../VCR_OSD_MONO_1.001.ttf') format('truetype');
+}
+
+*{
+    font-family: 'pixel';
+}
+
 body {
-    font-family:'Courier New', Courier, monospace;
     text-align: center;
     background-color: blueviolet;
 }
-
-
 
 #board {
     background-color: black;
@@ -15,9 +21,47 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: none; /* Remove the double border */
     text-align: center;
+    width: 300px;
+    color: #000;
+    z-index: 1000;
+}
+
+.popup h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: rgb(54, 255, 47); 
+}
+
+.popup p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: rgb(69, 69, 247);
+}
+
+.popup .score {
+    font-weight: bold;
+    font-size: 18px;
+    color: #008000; /* Green for a classic 80s color palette */
+}
+
+.popup button {
+    margin: 5px;
+    padding: 12px 25px; 
+    font-size: 16px;
+    cursor: pointer;
+    border: none; /* Remove the outset border */
+    color: rgb(54, 255, 47); 
+    border: solid rgb(54, 255, 47); 
+    background-color: #000;
+}
+
+.popup button:hover{
+    color:#000; 
+    border: solid rgb(54, 255, 47); 
+    background-color: Rgb(54, 255, 47);
+
 }
 

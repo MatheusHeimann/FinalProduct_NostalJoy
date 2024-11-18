@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'pixel';
+    src: url('../VCR_OSD_MONO_1.001.ttf') format('truetype');
+}
+
+*{
+    font-family: 'pixel';
+}
+
 body {
     background-color: rgb(69, 69, 247);
     margin: 0;
@@ -12,15 +21,12 @@ canvas {
     background-image: url(../assets/background-super.jpeg);
     background-repeat: repeat-x;
     background-size: cover;
-    /* Ensure the canvas doesn't cover the entire body */
-    /* width: 800px;
-    height: 600px;  */
 }
 
 #gameCanvas {
     display: block;
-    margin: 0 auto; /* Center the canvas */
-    border: 1px solid black; /* Optional: Add a border for visibility */
+    margin: 0 auto; 
+    border: 1px solid black; 
 }
 
 .popup {
@@ -28,9 +34,69 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
+    background-color: #f0f0f0; 
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 3px double #000080; 
+    border-radius: 10px; 
     text-align: center;
+    width: 300px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5); 
+    color: #000; 
+    z-index: 1000;
+}
+
+.popup h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #800000; 
+    text-shadow: 1px 1px 2px #fff, 0 0 1px #800000; 
+}
+
+.popup p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.popup .score {
+    font-weight: bold;
+    font-size: 18px;
+    color: #000080; 
+    text-shadow: 1px 1px 2px #fff, 0 0 1px #000080; 
+}
+
+.popup button.play-again {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #4CAF50; 
+    color: #fff;
+    border: 2px outset #006400; 
+    border-radius: 5px;
+}
+
+.popup button.play-again:hover {
+    background-color: #45a049; 
+    border: 2px inset #004d00; 
+    color: #ffffe0; 
+}
+
+
+.popup button.back-to-menu {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #FF4C4C; 
+    color: #fff;
+    border: 2px outset #8B0000; 
+    border-radius: 5px;
+}
+
+.popup button.back-to-menu:hover {
+    background-color: #E60000; 
+    border: 2px inset #660000; 
+    color: #ffeeee; 
 }
 

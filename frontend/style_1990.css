@@ -59,6 +59,10 @@ a{
     padding: 1%;
 }
 
+.info_jogo img{
+    width: 30%;
+}
+
 img {
     width: 20%;
     height: 20%;

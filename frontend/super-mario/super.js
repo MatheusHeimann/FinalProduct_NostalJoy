@@ -53,12 +53,21 @@ const platforms = [
 // Enemy Object
 const enemies = [
     { x: 400, y: 305, width: 40, height: 40, velocityX: 2, color: 'green', originalPosition: { x: 400, y: 305 }},
-    { x: 600, y: 150, width: 40, height: 40, velocityX: 2, color: 'red', originalPosition: { x: 600, y: 150 }},
-    { x: 1200, y: 200, width: 40, height: 40, velocityX: 2, color: 'blue', originalPosition: { x: 1200, y: 200 }},
-    { x: 1500, y: 250, width: 40, height: 40, velocityX: 2, color: 'yellow', originalPosition: { x: 1500, y: 250 }},
-    { x: 1800, y: 300, width: 40, height: 40, velocityX: 2, color: 'purple', originalPosition: { x: 1800, y: 300 }},
+    { x: 600, y: 150, width: 40, height: 40, velocityX: 1, color: 'red', originalPosition: { x: 600, y: 150 }},
+    { x: 1200, y: 200, width: 40, height: 40, velocityX: 1.3, color: 'blue', originalPosition: { x: 1200, y: 200 }},
+    { x: 1500, y: 250, width: 40, height: 40, velocityX: 1.8, color: 'yellow', originalPosition: { x: 1500, y: 250 }},
+    { x: 1800, y: 350, width: 40, height: 40, velocityX: 2, color: 'purple', originalPosition: { x: 1800, y: 350 }},
     // Ensure all enemies are within the canvas bounds
 ];
+
+const flag = {
+    x: 2000, // posição no final do nível
+    y: 350,  // ajuste para a posição desejada
+    width: 30,
+    height: 150,
+    color: 'blue'
+};
+
 
 const movementRange = 200;
 
@@ -66,6 +75,12 @@ function drawPlayer(offset) {
     ctx.fillStyle = player.color;
     ctx.fillRect(player.x - offset, player.y, player.width, player.height);
 }
+
+function drawFlag(offset) {
+    ctx.fillStyle = flag.color;
+    ctx.fillRect(flag.x - offset, flag.y, flag.width, flag.height);
+}
+
 
 function drawPlatforms(offset) {
     ctx.fillStyle = 'brown';
@@ -90,6 +105,40 @@ function drawEnemies(offset) {
     });
 }
 
+function handleFlagCollision() {
+    // Verifica colisão com a bandeira (posição fixa no mundo)
+    if (
+        player.x < flag.x + flag.width &&
+        player.x + player.width > flag.x &&
+        player.y < flag.y + flag.height &&
+        player.y + player.height > flag.y
+    ) {
+        pontuacao += 1000;
+        gameOver = true;
+        setTimeout(() => {
+            const popup = document.createElement('div');
+            popup.classList.add('popup');
+            popup.innerHTML = `
+                <h2>Parabéns!</h2>
+                <p>Você alcançou a bandeira e venceu o nível!</p>
+                <p>Sua pontuação: ${pontuacao}</p>
+                <button class="play-again">Jogar novamente</button>
+                <button class="back-to-menu">Voltar para a seleção de jogos</button>
+            `;
+            document.body.appendChild(popup);
+
+            popup.querySelector('.play-again').addEventListener('click', () => {
+                popup.remove();
+                resetGame();
+            });
+            popup.querySelector('.back-to-menu').addEventListener('click', () => {
+                popup.remove();
+                window.location.href = "../select.html";
+            });
+        }, 100);
+    }
+}
+
 function handleCoinCollision() {
     coins.forEach(coin => {
         if (checkCollision(player, coin) && !coin.collected) {
@@ -111,11 +160,14 @@ function moveEnemies() {
 }
 
 function checkCollision(a, b) {
+
     return a.x < b.x + b.width &&
         a.x + a.width > b.x &&
         a.y < b.y + b.height &&
         a.y + a.height > b.y;
 }
+
+
 
 function handlePlatformCollision() {
     platforms.forEach(platform => {
@@ -159,6 +211,7 @@ function handlePlatformCollision() {
             player.x = platform.x + platform.width; // Ajusta a posição para a direita da plataforma
         }
     });
+    
 }
 
 
@@ -174,31 +227,30 @@ function handleCollisions() {
                     const popup = document.createElement('div');
                     popup.classList.add('popup');
                     popup.innerHTML = `
-            <h2>Game Over!</h2>
-            <p>Sua pontuação: ${pontuacao}</p>
-            <button class="play-again">Jogar novamente</button>
-            <button class="back-to-menu">Voltar para a seleção de jogos</button>
-        `;
-
+                        <h2>Game Over!</h2>
+                        <p>Sua pontuação: ${pontuacao}</p>
+                        <button class="play-again">Jogar novamente</button>
+                        <button class="back-to-menu">Voltar para a seleção de jogos</button>
+                    `;
                     document.body.appendChild(popup);
 
-                    // Add an event listener to the play again button
-                    const playAgainButton = popup.querySelector('.play-again');
-                    playAgainButton.addEventListener('click', () => {
+                    popup.querySelector('.play-again').addEventListener('click', () => {
                         popup.remove();
                         resetGame();
                     });
-                    const backToMenuButton = popup.querySelector('.back-to-menu');
-                    backToMenuButton.addEventListener('click', () => {
+                    popup.querySelector('.back-to-menu').addEventListener('click', () => {
                         popup.remove();
                         window.location.href = "../select.html";
                     });
-
                 }, 100);
             }
         }
     });
+    handleFlagCollision();
+   
 }
+
+
 
 function resetGame() {
     // Reset player position and score
@@ -223,8 +275,8 @@ function resetGame() {
 
 function updateScore() {
     ctx.fillStyle = 'black';
-    ctx.font = '20px Arial';
-    ctx.fillText(`Score: ${pontuacao}`, 10, 20);
+    ctx.font = '20px pixel';
+    ctx.fillText(`Pontuação: ${pontuacao}`, 10, 20);
 }
 
 async function update() {
@@ -251,6 +303,9 @@ async function update() {
         return;
 
     }
+    
+    console.log(`Player: (${player.x}, ${player.y}), Flag Adjusted: (${flag.x - scrollOffset}, ${flag.y})`);
+
 
     // Limpa o canvas a cada frame
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -282,6 +337,7 @@ async function update() {
     scrollOffset += player.velocityX;
 
     // Desenha os elementos com o offset da câmera
+    drawFlag(scrollOffset);
     drawPlayer(scrollOffset);
     drawPlatforms(scrollOffset);
     drawCoins(scrollOffset);

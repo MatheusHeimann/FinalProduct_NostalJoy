@@ -17,7 +17,11 @@ canvas {
     height: 600px;  */
 }
 
-
+#gameCanvas {
+    display: block;
+    margin: 0 auto; /* Center the canvas */
+    border: 1px solid black; /* Optional: Add a border for visibility */
+}
 
 .popup {
     position: fixed;
@@ -29,3 +33,4 @@ canvas {
     border: 1px solid #ccc;
     text-align: center;
 }
+

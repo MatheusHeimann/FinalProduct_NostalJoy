@@ -106,6 +106,7 @@ async function update() {
 
         document.body.appendChild(popup);
 
+
         // Add an event listener to the play again button
         const playAgainButton = popup.querySelector('.play-again');
         playAgainButton.addEventListener('click', () => {

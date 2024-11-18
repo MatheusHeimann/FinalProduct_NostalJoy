@@ -1,8 +1,9 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = 800;
-canvas.height = 400;
+canvas.width = 800; // Full width of the game world
+canvas.height = 400; // Height of the game world
+
 
 let id_jogo = 2;
 
@@ -51,10 +52,15 @@ const platforms = [
 
 // Enemy Object
 const enemies = [
-    { x: 600, y: 305, width: 40, height: 40, velocityX: 2, color: 'green', originalPosition: { x: 600, y: 305 }},
-    { x: 300, y: 605, width: 40, height: 40, velocityX: 2, color: 'green', originalPosition: { x: 300, y: 605 }},
-    { x: 100, y: 1305, width: 40, height: 40, velocityX: 2, color: 'green', originalPosition: { x: 100, y: 1305 }}
+    { x: 400, y: 305, width: 40, height: 40, velocityX: 2, color: 'green', originalPosition: { x: 400, y: 305 }},
+    { x: 600, y: 150, width: 40, height: 40, velocityX: 2, color: 'red', originalPosition: { x: 600, y: 150 }},
+    { x: 1200, y: 200, width: 40, height: 40, velocityX: 2, color: 'blue', originalPosition: { x: 1200, y: 200 }},
+    { x: 1500, y: 250, width: 40, height: 40, velocityX: 2, color: 'yellow', originalPosition: { x: 1500, y: 250 }},
+    { x: 1800, y: 300, width: 40, height: 40, velocityX: 2, color: 'purple', originalPosition: { x: 1800, y: 300 }},
+    // Ensure all enemies are within the canvas bounds
 ];
+
+const movementRange = 200;
 
 function drawPlayer(offset) {
     ctx.fillStyle = player.color;
@@ -95,11 +101,12 @@ function handleCoinCollision() {
 
 function moveEnemies() {
     enemies.forEach(enemy => {
-        enemy.x += enemy.velocityX;
-        // Reverse direction when reaching canvas edges
-        if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) {
-            enemy.velocityX *= -1;
+        // Check if the enemy is within the allowed movement range
+        if (enemy.x > enemy.originalPosition.x + movementRange || enemy.x < enemy.originalPosition.x - movementRange) {
+            enemy.velocityX *= -1; // Reverse direction if out of bounds
         }
+
+        enemy.x += enemy.velocityX; // Move the enemy
     });
 }
 
